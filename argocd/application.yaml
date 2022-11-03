@@ -1,0 +1,175 @@
+server:
+  additionalApplications:
+    - name: www-aimhighergg-com
+      namespace: argocd
+      project: default
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: www-aimhighergg-com
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+      #syncPolicy:
+      #  automated:
+      #    prune: false
+      #    selfHeal: false
+      source:
+        repoURL: 'https://github.com/AbeYuki/aimhighergg-com.git'
+        path: overlay/prod/
+        targetRevision: HEAD
+    - name: monitoring-k8s
+      namespace: argocd
+      project: default
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: monitoring
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+      #syncPolicy:
+      #  automated:
+      #    prune: false
+      #    selfHeal: false
+      source:
+        repoURL: 'https://github.com/AbeYuki/monitoring-k8s.git'
+        path: overlay/prod/
+        targetRevision: HEAD
+    - name: ingress-nginx
+      namespace: argocd
+      project: default
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: ingress-nginx
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+      #syncPolicy:
+      #  automated:
+      #    prune: false
+      #    selfHeal: false
+      source:
+        repoURL: https://kubernetes.github.io/ingress-nginx
+        targetRevision: "4.1.4"
+        chart: ingress-nginx
+        helm:
+          releaseName: v4.1.4
+          valueFiles:
+          - https://raw.githubusercontent.com/AbeYuki/helm/main/ingress-nginx/values_main_on_premises.yaml
+    - name: metallb
+      namespace: argocd
+      project: default
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: metallb-system
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+      #syncPolicy:
+      #  automated:
+      #    prune: false
+      #    selfHeal: false
+      source:
+        repoURL: https://metallb.github.io/metallb
+        targetRevision: "0.12.1"
+        chart: ingress-nginx
+        helm: metallb
+          releaseName: v0.12.1
+          valueFiles:
+          - https://raw.githubusercontent.com/AbeYuki/helm/main/metallb/values_main_on_premises.yaml
+    - name: longhorn
+      namespace: argocd
+      project: default
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: longhorn-system
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+      #syncPolicy:
+      #  automated:
+      #    prune: false
+      #    selfHeal: false
+      source:
+        repoURL: https://metallb.github.io/metallb
+        targetRevision: "1.3.2"
+        chart: longhorn
+        helm: longhorn 
+          releaseName: v1.3.2
+          valueFiles:
+          - https://raw.githubusercontent.com/AbeYuki/helm/main/metallb/values_main_on_premises.yaml
+    - name: cert-manager
+      namespace: argocd
+      project: default
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: cert-manager
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+      #syncPolicy:
+      #  automated:
+      #    prune: false
+      #    selfHeal: false
+      source:
+        repoURL: https://kubernetes.github.io/ingress-nginx
+        targetRevision: "v1.1.0"
+        chart: jetstack/cert-manager
+        helm:
+          releaseName: v1.1.0
+          valueFiles:
+            - values.yaml
+    - name: cert-manager
+      namespace: argocd
+      project: default
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: cert-manager
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+      #syncPolicy:
+      #  automated:
+      #    prune: false
+      #    selfHeal: false
+      source:
+        repoURL: https://charts.jetstack.io
+        targetRevision: "v1.10.0"
+        chart: cert-manager
+        helm:
+          releaseName: v1.10.0
+          valueFiles:
+          - values.yaml
+        
+configs:
+  repositories:
+    aimhighergg-com:
+      type: git
+      url: https://github.com/AbeYuki/aimhighergg-com
+    monitoring-k8s:
+      type: git
+      url: https://github.com/AbeYuki/monitoring-k8s.git
+    redmine-k8s:
+      type: git
+      url: https://github.com/AbeYuki/redmine-k8s.git
+    jupyterlab-k8s:
+      type: git
+      url: https://github.com/AbeYuki/jupyterlab-k8s.git
+    cert-manager:
+      type: helm
+      url: https://charts.jetstack.io
+    longhorn:
+      type: helm
+      name: longhorn
+      url: https://charts.longhorn.io
+    metallb:
+      type: helm
+      name: metalbl
+      url: https://metallb.github.io/metallb
+    ingress-nginx:
+      type: helm
+      name: ingress-nginx
+      url: https://kubernetes.github.io/ingress-nginx
+    k8s-dashboard:
+      type: helm
+      name: k8s-dashboard
+      url: https://kubernetes.github.io/dashboard/
