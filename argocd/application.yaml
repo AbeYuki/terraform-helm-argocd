@@ -96,7 +96,7 @@ server:
         helm: 
           releaseName: v1.3.2
           valueFiles:
-          - https://raw.githubusercontent.com/AbeYuki/helm/main/metallb/values_main_on_premises.yaml
+          - https://raw.githubusercontent.com/AbeYuki/helm/main/longhorn/values_main_on_premises.yaml
     - name: cert-manager
       namespace: argocd
       project: default
