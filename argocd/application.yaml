@@ -188,7 +188,7 @@ server:
         targetRevision: "4.1.4"
         chart: ingress-nginx
         helm:
-          releaseName: v4.1.4
+          releaseName: v4-1-4
           valueFiles:
           - https://raw.githubusercontent.com/AbeYuki/helm/main/ingress-nginx/values_main_on_premises.yaml
     - name: metallb
@@ -209,7 +209,7 @@ server:
         targetRevision: "0.12.1"
         chart: metallb
         helm:
-          releaseName: v0.12.1
+          releaseName: v0-12-1
           valueFiles:
           - https://raw.githubusercontent.com/AbeYuki/helm/main/metallb/values_main_on_premises.yaml
     - name: longhorn
@@ -230,7 +230,7 @@ server:
         targetRevision: "1.3.2"
         chart: longhorn
         helm: 
-          releaseName: v1.3.2
+          releaseName: v1-3-2
           valueFiles:
           - https://raw.githubusercontent.com/AbeYuki/helm/main/longhorn/values_main_on_premises.yaml
     - name: cert-manager
