@@ -71,7 +71,7 @@ server:
       source:
         repoURL: https://metallb.github.io/metallb
         targetRevision: "0.12.1"
-        chart: ingress-nginx
+        chart: metallb
         helm:
           releaseName: v0.12.1
           valueFiles:
@@ -90,7 +90,7 @@ server:
       #    prune: false
       #    selfHeal: false
       source:
-        repoURL: https://metallb.github.io/metallb
+        repoURL: https://charts.longhorn.io
         targetRevision: "1.3.2"
         chart: longhorn
         helm: 
