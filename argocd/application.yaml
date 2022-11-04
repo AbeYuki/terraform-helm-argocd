@@ -72,7 +72,7 @@ server:
         repoURL: https://metallb.github.io/metallb
         targetRevision: "0.12.1"
         chart: ingress-nginx
-        helm: metallb
+        helm:
           releaseName: v0.12.1
           valueFiles:
           - https://raw.githubusercontent.com/AbeYuki/helm/main/metallb/values_main_on_premises.yaml
@@ -93,7 +93,7 @@ server:
         repoURL: https://metallb.github.io/metallb
         targetRevision: "1.3.2"
         chart: longhorn
-        helm: longhorn 
+        helm: 
           releaseName: v1.3.2
           valueFiles:
           - https://raw.githubusercontent.com/AbeYuki/helm/main/metallb/values_main_on_premises.yaml
