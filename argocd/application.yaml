@@ -34,6 +34,142 @@ server:
         repoURL: 'https://github.com/AbeYuki/monitoring-k8s.git'
         path: overlay/prod/
         targetRevision: HEAD
+    - name: ingress-aggregator-argocd
+      namespace: argocd
+      project: default
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: 
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+      #syncPolicy:
+      #  automated:
+      #    prune: false
+      #    selfHeal: false
+      source:
+        repoURL: 'https://github.com/AbeYuki/ingress-aggregator.git'
+        path: overlay/argocd/
+        targetRevision: HEAD
+    - name: ingress-aggregator-argocd-api
+      namespace: argocd
+      project: default
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: 
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+      #syncPolicy:
+      #  automated:
+      #    prune: false
+      #    selfHeal: false
+      source:
+        repoURL: 'https://github.com/AbeYuki/ingress-aggregator.git'
+        path: overlay/argocd-api
+        targetRevision: HEAD
+    - name: ingress-aggregator-dashboard
+      namespace: argocd
+      project: default
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: 
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+      #syncPolicy:
+      #  automated:
+      #    prune: false
+      #    selfHeal: false
+      source:
+        repoURL: 'https://github.com/AbeYuki/ingress-aggregator.git'
+        path: overlay/dashboard/
+        targetRevision: HEAD
+    - name: ingress-aggregator-grafana
+      namespace: argocd
+      project: default
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: 
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+      #syncPolicy:
+      #  automated:
+      #    prune: false
+      #    selfHeal: false
+      source:
+        repoURL: 'https://github.com/AbeYuki/ingress-aggregator.git'
+        path: overlay/grafana/
+        targetRevision: HEAD
+    - name: ingress-aggregator-jupyterlab
+      namespace: argocd
+      project: default
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: 
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+      #syncPolicy:
+      #  automated:
+      #    prune: false
+      #    selfHeal: false
+      source:
+        repoURL: 'https://github.com/AbeYuki/ingress-aggregator.git'
+        path: overlay/jupyterlab/
+        targetRevision: HEAD
+    - name: ingress-aggregator-longhorn
+      namespace: argocd
+      project: default
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: 
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+      #syncPolicy:
+      #  automated:
+      #    prune: false
+      #    selfHeal: false
+      source:
+        repoURL: 'https://github.com/AbeYuki/ingress-aggregator.git'
+        path: overlay/longhorn/
+        targetRevision: HEAD
+    - name: ingress-aggregator-prometheus
+      namespace: argocd
+      project: default
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: 
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+      #syncPolicy:
+      #  automated:
+      #    prune: false
+      #    selfHeal: false
+      source:
+        repoURL: 'https://github.com/AbeYuki/ingress-aggregator.git'
+        path: overlay/prometheus/
+        targetRevision: HEAD
+    - name: ingress-aggregator-redmine
+      namespace: argocd
+      project: default
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: 
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+      #syncPolicy:
+      #  automated:
+      #    prune: false
+      #    selfHeal: false
+      source:
+        repoURL: 'https://github.com/AbeYuki/ingress-aggregator.git'
+        path: overlay/redmine/
+        targetRevision: HEAD
     - name: ingress-nginx
       namespace: argocd
       project: default
@@ -133,6 +269,9 @@ configs:
     jupyterlab-k8s:
       type: git
       url: https://github.com/AbeYuki/jupyterlab-k8s.git
+    ingress-aggregator:
+      type: git
+      url: https://github.com/AbeYuki/ingress-aggregator.git
     cert-manager:
       type: helm
       url: https://charts.jetstack.io
