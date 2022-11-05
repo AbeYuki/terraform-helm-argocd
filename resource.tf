@@ -1,5 +1,5 @@
 resource "helm_release" "argocd" {
-  name             = "v-5-13-2-argocd"
+  name             = "argocd"
   timeout          = 600000
   wait             = true
   repository       = "https://argoproj.github.io/argo-helm"
@@ -9,8 +9,19 @@ resource "helm_release" "argocd" {
   create_namespace = true
 
   set {
+    mame  = "app.kubernetes.io/managed-by"
+    value = "Helm"
+  }
+
+  set {
+    name   = "meta.helm.sh/release-name"
+    value = "v-5-13-2"
+  }
+
+
+  set {
     name  = "server.service.type"
-    value = "LoadBalancer"
+    valu = "LoadBalancer"
   }
 
   values = [
