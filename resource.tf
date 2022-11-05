@@ -14,14 +14,13 @@ resource "helm_release" "argocd" {
   }
 
   set {
-    name   = "meta.helm.sh/release-name"
+    name  = "meta.helm.sh/release-name"
     value = "v-5-13-2"
   }
 
-
   set {
     name  = "server.service.type"
-    valu = "LoadBalancer"
+    value = "LoadBalancer"
   }
 
   values = [
