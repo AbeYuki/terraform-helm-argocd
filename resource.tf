@@ -9,7 +9,7 @@ resource "helm_release" "argocd" {
   create_namespace = true
 
   set {
-    mame  = "app.kubernetes.io/managed-by"
+    name  = "app.kubernetes.io/managed-by"
     value = "Helm"
   }
 
