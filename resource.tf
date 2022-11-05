@@ -9,16 +9,6 @@ resource "helm_release" "argocd" {
   create_namespace = true
 
   set {
-    name  = "app.kubernetes.io/managed-by"
-    value = "Helm"
-  }
-
-  set {
-    name  = "meta.helm.sh/release-name"
-    value = "v-5-13-2"
-  }
-
-  set {
     name  = "server.service.type"
     value = "LoadBalancer"
   }
