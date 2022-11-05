@@ -2,6 +2,11 @@ server:
   additionalApplications:
     - name: www-aimhighergg-com
       namespace: argocd
+      additionalLabels: {}
+      additionalAnnotations:
+        "helm.sh/resource-policy": keep
+      finalizers:
+      - resources-finalizer.argocd.argoproj.io
       project: default
       destination:
         server: 'https://kubernetes.default.svc'
