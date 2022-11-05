@@ -2,11 +2,6 @@ server:
   additionalApplications:
     - name: www-aimhighergg-com
       namespace: argocd
-      additionalLabels: {}
-      additionalAnnotations:
-        "helm.sh/resource-policy": keep
-      finalizers:
-      - resources-finalizer.argocd.argoproj.io
       project: default
       destination:
         server: 'https://kubernetes.default.svc'
@@ -24,11 +19,6 @@ server:
         targetRevision: HEAD
     - name: monitoring-k8s
       namespace: argocd
-      additionalLabels: {}
-      additionalAnnotations:
-        "helm.sh/resource-policy": keep
-      finalizers:
-      - resources-finalizer.argocd.argoproj.io
       project: default
       destination:
         server: 'https://kubernetes.default.svc'
@@ -46,11 +36,6 @@ server:
         targetRevision: HEAD
     - name: ingress-aggregator-argocd
       namespace: argocd
-      additionalLabels: {}
-      additionalAnnotations:
-        "helm.sh/resource-policy": keep
-      finalizers:
-      - resources-finalizer.argocd.argoproj.io
       project: default
       destination:
         server: 'https://kubernetes.default.svc'
@@ -68,11 +53,6 @@ server:
         targetRevision: HEAD
     - name: ingress-aggregator-argocd-api
       namespace: argocd
-      additionalLabels: {}
-      additionalAnnotations:
-        "helm.sh/resource-policy": keep
-      finalizers:
-      - resources-finalizer.argocd.argoproj.io
       project: default
       destination:
         server: 'https://kubernetes.default.svc'
@@ -90,11 +70,6 @@ server:
         targetRevision: HEAD
     - name: ingress-aggregator-dashboard
       namespace: argocd
-      additionalLabels: {}
-      additionalAnnotations:
-        "helm.sh/resource-policy": keep
-      finalizers:
-      - resources-finalizer.argocd.argoproj.io
       project: default
       destination:
         server: 'https://kubernetes.default.svc'
@@ -112,11 +87,6 @@ server:
         targetRevision: HEAD
     - name: ingress-aggregator-grafana
       namespace: argocd
-      additionalLabels: {}
-      additionalAnnotations:
-        "helm.sh/resource-policy": keep
-      finalizers:
-      - resources-finalizer.argocd.argoproj.io
       project: default
       destination:
         server: 'https://kubernetes.default.svc'
@@ -134,11 +104,6 @@ server:
         targetRevision: HEAD
     - name: ingress-aggregator-jupyterlab
       namespace: argocd
-      additionalLabels: {}
-      additionalAnnotations:
-        "helm.sh/resource-policy": keep
-      finalizers:
-      - resources-finalizer.argocd.argoproj.io
       project: default
       destination:
         server: 'https://kubernetes.default.svc'
@@ -156,11 +121,6 @@ server:
         targetRevision: HEAD
     - name: ingress-aggregator-longhorn
       namespace: argocd
-      additionalLabels: {}
-      additionalAnnotations:
-        "helm.sh/resource-policy": keep
-      finalizers:
-      - resources-finalizer.argocd.argoproj.io
       project: default
       destination:
         server: 'https://kubernetes.default.svc'
@@ -178,11 +138,6 @@ server:
         targetRevision: HEAD
     - name: ingress-aggregator-prometheus
       namespace: argocd
-      additionalLabels: {}
-      additionalAnnotations:
-        "helm.sh/resource-policy": keep
-      finalizers:
-      - resources-finalizer.argocd.argoproj.io
       project: default
       destination:
         server: 'https://kubernetes.default.svc'
@@ -200,11 +155,6 @@ server:
         targetRevision: HEAD
     - name: ingress-aggregator-redmine
       namespace: argocd
-      additionalLabels: {}
-      additionalAnnotations:
-        "helm.sh/resource-policy": keep
-      finalizers:
-      - resources-finalizer.argocd.argoproj.io
       project: default
       destination:
         server: 'https://kubernetes.default.svc'
