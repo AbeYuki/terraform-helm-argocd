@@ -250,8 +250,7 @@ spec:
     helm:
       releaseName: v1-4-0
       valueFiles:
-         - values_main_on_premises.yaml
-         - https://raw.githubusercontent.com/AbeYuki/helm/main/longhorn/
+         - https://raw.githubusercontent.com/AbeYuki/helm/main/longhorn/values_main_on_premises.yaml
   destination:
     server: "https://kubernetes.default.svc"
     namespace: longhorn-system
