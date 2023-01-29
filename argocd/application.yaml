@@ -41,6 +41,26 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
+  name: redmine-k8s
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/AbeYuki/redmine-k8s.git
+    targetRevision: HEAD
+    path: overlay/prod/
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prod-redmine
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+    automated:
+      selfHeal: false
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
   name: ingress-aggregator-argocd
   namespace: argocd
 spec:
