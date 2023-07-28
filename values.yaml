@@ -1,0 +1,31 @@
+server:
+  config:
+    configManagementPlugins: |-
+      - name: argocd-vault-plugin
+        generate:
+          command: ["argocd-vault-plugin"]
+          args: ["generate", "./"]
+repoServer:
+  volumes:
+    - name: custom-tools
+      emptyDir: {}
+  volumeMounts:
+    - name: custom-tools
+      mountPath: /usr/local/bin/argocd-vault-plugin
+      subPath: argocd-vault-plugin
+  initContainers:
+    - name: download-tools
+      image: alpine:3.8
+      command: [sh, -c]
+      args:
+        - >-
+          wget -O argocd-vault-plugin
+          https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v1.15.0/argocd-vault-plugin_1.15.0_linux_arm64 &&
+          chmod +x argocd-vault-plugin &&
+          mv argocd-vault-plugin /custom-tools/
+      volumeMounts:
+        - mountPath: /custom-tools
+          name: custom-tools
+  envFrom:
+    - secretRef:
+        name : argocd-vault-plugin-credentials
