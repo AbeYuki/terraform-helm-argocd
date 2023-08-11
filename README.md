@@ -4,6 +4,23 @@
 https://github.com/argoproj/argo-helm
 
 
+## create avp secret
+```
+kubectl apply -f -<<EOF
+kind: Secret
+apiVersion: v1
+metadata:
+  name: argocd-vault-plugin-credentials
+  namespace: argocd
+type: Opaque
+stringData:
+  AVP_AUTH_TYPE: "k8s"
+  AVP_K8S_ROLE: "argocd"
+  AVP_TYPE: "vault"
+  VAULT_ADDR: "http://vault.vault.svc.cluster.local:8200"
+EOF
+```
+
 ## add crd
 ### argocd 
 ```
@@ -16,7 +33,7 @@ https://cert-manager.io/docs/installation/helm/
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cert-manager.crds.yaml
 ```
 
-### argocd secert
+### get argocd secert
 ```
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
 ```
