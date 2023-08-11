@@ -2,7 +2,7 @@ terraform {
   backend "s3" {
     bucket = "aimhighergg-tfstate"
     region = "ap-northeast-1"
-    key = "argocd.tfstate"
+    key = "helm-argocd.tfstate"
     encrypt = true
   }
   required_providers {
@@ -18,8 +18,8 @@ terraform {
 }
 provider "helm" {
   kubernetes {
-    config_path    = "~/.kube/config_k3s_node3"
-    config_context = "k3s-node3"
+    config_path    = "~/.kube/config_k3s_node2"
+    config_context = "k3s-node2"
   }
 }
 provider "aws" {
