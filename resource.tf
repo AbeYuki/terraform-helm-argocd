@@ -5,19 +5,15 @@ resource "helm_release" "argocd" {
   repository       = "https://argoproj.github.io/argo-helm"
   chart            = "argo-cd"
   namespace        = "argocd"
-  version          = "5.41.1"
+  version          = "5.43.3"
   create_namespace = true
 
   set {
     name  = "server.service.type"
     value = "NodePort"
   }
+  
   values = [
-    file("${path.module}/values.yaml")
+    file("values.yaml")
   ]
-resource "kubernetes_secret" "argocd_vault_plugin" {
-  metadata {
-    name      = "argocd-vault-plugin-credentials"
-    namespace = "argocd"
-  }
 }
