@@ -12,7 +12,7 @@ resource "helm_release" "argocd" {
     name  = "server.service.type"
     value = "NodePort"
   }
-
+  
   values = [
     file("values.yaml")
   ]
