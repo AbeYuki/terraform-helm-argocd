@@ -12,14 +12,14 @@ terraform {
     }
     helm = {
       source = "hashicorp/helm"
-      version = "2.8.0"
+      version = "2.10.1"
     }
   }
 }
 provider "helm" {
   kubernetes {
-    config_path    = "~/.kube/config_k3s_node2"
-    config_context = "k3s-node2"
+    config_path    = "~/.kube/config_k3s_node3"
+    config_context = "k3s-node3"
   }
 }
 provider "aws" {
