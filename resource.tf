@@ -13,11 +13,6 @@ resource "helm_release" "argocd" {
     value = "NodePort"
   }
   
-    set {
-    name = "configs.cm.dex.config.connectors.config.caData"
-    value = "$ARGOSECRET"
-  }
-  
   values = [
     file("values.yaml")
   ]
