@@ -28,6 +28,10 @@ repoServer:
   envFrom: 
    - secretRef:
        name: argocd-vault-plugin-credentials
+  serviceAccount:
+    create: true
+    name: "" 
+    automountServiceAccountToken: true
   rbac:
     - verbs:
         - get
