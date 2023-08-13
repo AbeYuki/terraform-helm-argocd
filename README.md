@@ -4,23 +4,6 @@
 https://github.com/argoproj/argo-helm
 
 
-## create avp secret
-```
-kubectl apply -f -<<EOF
-kind: Secret
-apiVersion: v1
-metadata:
-  name: argocd-vault-plugin-credentials
-  namespace: argocd
-type: Opaque
-stringData:
-  AVP_AUTH_TYPE: "k8s"
-  AVP_K8S_ROLE: "argocd"
-  AVP_TYPE: "vault"
-  VAULT_ADDR: "http://vault.vault.svc.cluster.local:8200"
-EOF
-```
-
 ## add crd
 ### argocd 
 ```
