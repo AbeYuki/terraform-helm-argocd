@@ -18,8 +18,8 @@ terraform {
 }
 provider "helm" {
   kubernetes {
-    config_path    = "~/.kube/config_k3s_node3"
-    config_context = "k3s-node3"
+    config_path    = "~/.kube/config_k3s_node4"
+    config_context = "k3s-node4"
   }
 }
 provider "aws" {
