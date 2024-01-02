@@ -21,7 +21,7 @@ configs:
       - name: argocd-vault-plugin-kustomize
         generate:
           command: ["sh", "-c"]
-          args: ["kustomize build . | argocd-vault-plugin generate -"]
+          args: ["kustomize build . | argocd-vault-plugin generate --verbose-sensitive-output -"]
 repoServer:
   name: repo-server
   replicas: 1
