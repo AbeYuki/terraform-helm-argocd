@@ -49,10 +49,12 @@ repoServer:
     env:
       - name: AVP_VERSION
         value: "1.14.0"
+      - name: CPU_ARCHITECTURE
+        value: "linux_arm64"
     args:
       - >-
         wget -O argocd-vault-plugin
-        https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v${AVP_VERSION}/argocd-vault-plugin_${AVP_VERSION}_linux_arm64 &&
+        https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v${AVP_VERSION}/argocd-vault-plugin_${AVP_VERSION}_${CPU_ARCHITECTURE} &&
         chmod +x argocd-vault-plugin &&
         mv argocd-vault-plugin /custom-tools/
     volumeMounts:
