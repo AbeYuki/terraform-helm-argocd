@@ -3,6 +3,28 @@
 ## argocd helm
 https://github.com/argoproj/argo-helm
 
+## add argocd-vault-plugin-credentials
+
+```
+kubectl apply -f -<<EOF
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: argocd
+---
+kind: Secret
+apiVersion: v1
+metadata:
+  name: argocd-vault-plugin-credentials
+  namespace: argocd
+type: Opaque
+stringData:
+  AVP_AUTH_TYPE: "k8s"
+  AVP_K8S_ROLE: "YOUR_ROLE"
+  AVP_TYPE: "vault"
+  VAULT_ADDR: "http://vault.vault.svc.cluster.local:8200"
+EOF
+```
 
 ## add crd
 
