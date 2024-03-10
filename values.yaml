@@ -50,7 +50,7 @@ repoServer:
       - name: AVP_VERSION
         value: "1.14.0"
       - name: CPU_ARCHITECTURE
-        value: "linux_arm64"
+        value: "linux_amd64"
     args:
       - >-
         wget -O argocd-vault-plugin
