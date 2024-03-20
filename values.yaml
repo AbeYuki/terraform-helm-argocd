@@ -51,7 +51,7 @@ repoServer:
        name: argocd-vault-plugin-credentials
   initContainers:
     - name: download-tools
-      image: alpine:3.8
+      image: alpine:3.19.1
       env:
         - name: AVP_VERSION
           value: 1.17.0
@@ -67,7 +67,7 @@ repoServer:
   extraContainers:
     - name: avp
       command: [/var/run/argocd/argocd-cmp-server]
-      image: quay.io/argoproj/argocd:v2.10.2
+      image: registry.access.redhat.com/ubi8
       securityContext:
         runAsNonRoot: true
         runAsUser: 999
@@ -84,7 +84,7 @@ repoServer:
           mountPath: /usr/local/bin/argocd-vault-plugin
     - name: avp-helm
       command: [/var/run/argocd/argocd-cmp-server]
-      image: quay.io/argoproj/argocd:v2.10.2
+      image: registry.access.redhat.com/ubi8
       securityContext:
         runAsNonRoot: true
         runAsUser: 999
