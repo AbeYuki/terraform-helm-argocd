@@ -3,6 +3,20 @@
 ## argocd helm
 https://github.com/argoproj/argo-helm
 
+### deploy
+
+```
+kubectl create ns argocd
+```
+```
+terraform init
+```
+```
+terraform plan
+```
+```
+terraform apply
+```
 
 ### get argocd secert
 ```

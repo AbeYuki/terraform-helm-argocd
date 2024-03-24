@@ -18,12 +18,6 @@ resource "helm_release" "argocd" {
   ]
 }
 
-resource "kubernetes_namespace" "argocd" {
-  metadata {
-    name = "argocd"
-  }
-}
-
 resource "kubernetes_secret" "argocd_vault_plugin" {
   metadata {
     name      = "argocd-vault-plugin-credentials"
