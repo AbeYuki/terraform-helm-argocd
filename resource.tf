@@ -1,5 +1,4 @@
 resource "helm_release" "argocd" {
-  timeout          = 120
   name             = "argocd"
   wait             = true
   repository       = "https://argoproj.github.io/argo-helm"
