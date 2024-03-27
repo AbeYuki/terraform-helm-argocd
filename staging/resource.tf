@@ -1,1 +1,1 @@
-../resource.tf
+../common/resource.tf
