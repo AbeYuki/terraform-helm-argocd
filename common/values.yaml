@@ -37,6 +37,8 @@ configs:
 repoServer:
   name: repo-server
   replicas: 2
+  serviceAccount:
+    automountServiceAccountToken: true
   rbac:
     - verbs:
         - get
