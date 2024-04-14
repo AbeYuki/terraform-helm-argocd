@@ -15,7 +15,7 @@ terraform {
       version = "2.10.1"
     }
     kubernetes = {
-      source = "hashicorp/kubernetes"
+      source  = "hashicorp/kubernetes"
       version = "2.27.0"
     }
   }
@@ -31,6 +31,6 @@ provider "helm" {
   }
 }
 provider "kubernetes" {
-    config_path    = "~/.kube/config_oci"
-    config_context = "oci-rke-cluster"
+  config_path    = "~/.kube/config_oci"
+  config_context = "oci-rke-cluster"
 }
