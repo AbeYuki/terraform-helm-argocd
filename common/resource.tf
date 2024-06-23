@@ -1,7 +1,12 @@
 resource "kubernetes_namespace" "argocd" {
   metadata {
+    labels = {
+      "kubernetes.io/metadata.name" = "argocd"
+      "name"                        = "argocd"
+    }
     name = "argocd"
   }
+
 }
 
 resource "kubernetes_secret" "argocd_vault_plugin" {
