@@ -44,6 +44,10 @@ provider "kubectl" {
   config_context = "k3s-node4"
 }
 
+module "common" {
+  source = "../modules/common"
+}
+
 resource "kubectl_manifest" "app_of_apps" {
     yaml_body = <<YAML
 apiVersion: argoproj.io/v1alpha1
@@ -61,4 +65,7 @@ spec:
     server: 'https://kubernetes.default.svc'
     namespace: argocd
 YAML
+  depends_on = [
+    module.common
+  ]
 }
