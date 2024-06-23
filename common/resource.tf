@@ -1,3 +1,9 @@
+resource "kubernetes_namespace" "argocd" {
+  metadata {
+    name = "argocd"
+  }
+}
+
 resource "kubernetes_secret" "argocd_vault_plugin" {
   metadata {
     name      = "argocd-vault-plugin-credentials"
@@ -10,6 +16,9 @@ resource "kubernetes_secret" "argocd_vault_plugin" {
     "VAULT_ADDR"    = "http://vault.vault.svc.cluster.local:8200"
   }
   type = "Opaque"
+  depends_on = [
+    kubernetes_namespace.argocd
+  ]
 }
 
 resource "helm_release" "argocd" {

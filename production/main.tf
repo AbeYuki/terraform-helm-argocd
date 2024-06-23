@@ -18,8 +18,13 @@ terraform {
       source = "hashicorp/kubernetes"
       version = "2.27.0"
     }
+    kubectl = {
+      source = "gavinbunney/kubectl"
+      version = "1.14.0"
+    }
   }
 }
+
 provider "aws" {
   profile = "default"
   region  = "ap-northeast-1"
@@ -31,6 +36,29 @@ provider "helm" {
   }
 }
 provider "kubernetes" {
-    config_path    = "~/.kube/config_k3s_node4"
-    config_context = "k3s-node4"
+  config_path    = "~/.kube/config_k3s_node4"
+  config_context = "k3s-node4"
+}
+provider "kubectl" {
+  config_path    = "~/.kube/config_k3s_node4"
+  config_context = "k3s-node4"
+}
+
+resource "kubectl_manifest" "app_of_apps" {
+    yaml_body = <<YAML
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-of-apps-root
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/AbeYuki/argocd
+    path: app-of-apps/production
+    targetRevision: HEAD
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: argocd
+YAML
 }

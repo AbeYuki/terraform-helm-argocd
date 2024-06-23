@@ -8,8 +8,13 @@ terraform {
       source = "hashicorp/kubernetes"
       version = "2.27.0"
     }
+    kubectl = {
+      source = "gavinbunney/kubectl"
+      version = "1.14.0"
+    }
   }
 }
+
 provider "helm" {
   kubernetes {
     config_path    = "~/.kube/minikube"
@@ -17,6 +22,34 @@ provider "helm" {
   }
 }
 provider "kubernetes" {
-    config_path    = "~/.kube/minikube"
-    config_context = "minikube"
+  config_path    = "~/.kube/minikube"
+  config_context = "minikube"
 }
+provider "kubectl" {
+  config_path    = "~/.kube/minikube"
+  config_context = "minikube"
+}
+
+resource "kubectl_manifest" "app_of_apps" {
+    yaml_body = <<YAML
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-of-apps-root
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/AbeYuki/argocd
+    path: app-of-apps/testing
+    targetRevision: HEAD
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: argocd
+YAML
+  depends_on = [
+    helm_release.argocd
+  ]
+}
+
+
