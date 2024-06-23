@@ -30,6 +30,10 @@ provider "kubectl" {
   config_context = "minikube"
 }
 
+module "common" {
+  source = "../modules/common"
+}
+
 resource "kubectl_manifest" "app_of_apps" {
     yaml_body = <<YAML
 apiVersion: argoproj.io/v1alpha1
@@ -48,7 +52,7 @@ spec:
     namespace: argocd
 YAML
   depends_on = [
-    helm_release.argocd
+    module.common
   ]
 }
 

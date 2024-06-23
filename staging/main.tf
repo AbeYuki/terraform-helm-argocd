@@ -31,17 +31,21 @@ provider "aws" {
 }
 provider "helm" {
   kubernetes {
-    config_path    = "~/.kube/config_oci"
+    config_path    = "~/.kube/config_rke_oci"
     config_context = "oci-rke-cluster"
   }
 }
 provider "kubernetes" {
-  config_path    = "~/.kube/config_oci"
+  config_path    = "~/.kube/config_rke_oci"
   config_context = "oci-rke-cluster"
 }
 provider "kubectl" {
-  config_path    = "~/.kube/config_oci"
+  config_path    = "~/.kube/config_rke_oci"
   config_context = "oci-rke-cluster"
+}
+
+module "common" {
+  source = "../modules/common"
 }
 
 resource "kubectl_manifest" "app_of_apps" {
@@ -61,4 +65,7 @@ spec:
     server: 'https://kubernetes.default.svc'
     namespace: argocd
 YAML
+  depends_on = [
+    module.common
+  ]
 }

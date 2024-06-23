@@ -6,7 +6,6 @@ resource "kubernetes_namespace" "argocd" {
     }
     name = "argocd"
   }
-
 }
 
 resource "kubernetes_secret" "argocd_vault_plugin" {
@@ -34,13 +33,12 @@ resource "helm_release" "argocd" {
   namespace        = "argocd"
   version          = "6.7.11"
   create_namespace = true
-
   set {
     name  = "server.service.type"
     value = "NodePort"
   }
   values = [
-    file("values.yaml")
+    file("${path.module}/values.yaml")
   ]
   depends_on = [
     kubernetes_secret.argocd_vault_plugin
