@@ -37,7 +37,11 @@ configs:
               - "find . -name '*.yaml' | xargs -I {} grep \"<path\\|avp\\.kubernetes\\.io\" {} | grep ."
         generate:
           command:
-            - sh
+            - "bash"
+            - "-o"
+            - "errexit"
+            - "-o"
+            - "pipefail"
             - "-c"
             - "kustomize build . | argocd-vault-plugin generate -s argocd:argocd-vault-plugin-credentials -"
         lockRepo: false
