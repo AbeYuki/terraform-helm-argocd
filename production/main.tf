@@ -31,17 +31,17 @@ provider "aws" {
 }
 provider "helm" {
   kubernetes {
-    config_path    = "~/.kube/config_k3s_node4"
-    config_context = "k3s-node4"
+    config_path    = "~/.kube/config_k3s_node2"
+    config_context = "k3s-node2"
   }
 }
 provider "kubernetes" {
-  config_path    = "~/.kube/config_k3s_node4"
-  config_context = "k3s-node4"
+  config_path    = "~/.kube/config_k3s_node2"
+  config_context = "k3s-node2"
 }
 provider "kubectl" {
-  config_path    = "~/.kube/config_k3s_node4"
-  config_context = "k3s-node4"
+  config_path    = "~/.kube/config_k3s_node2"
+  config_context = "k3s-node2"
 }
 
 module "common" {
@@ -59,7 +59,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/AbeYuki/argocd
-    path: app-of-apps/production
+    path: app-of-apps-root/production
     targetRevision: HEAD
   destination:
     server: 'https://kubernetes.default.svc'
