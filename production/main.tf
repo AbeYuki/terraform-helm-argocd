@@ -59,7 +59,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/AbeYuki/argocd
-    path: app-of-apps-root/production
+    path: app-of-apps/production
     targetRevision: HEAD
   destination:
     server: 'https://kubernetes.default.svc'
