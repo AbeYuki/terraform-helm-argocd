@@ -50,7 +50,14 @@ configs:
           command:
             - sh
             - "-c"
-            - "kustomize build --enable-helm"
+            - "kustomize build --enable-helm --load-restrictor=LoadRestrictionsNone . "
+        lockRepo: false
+      argocd-vault-plugin-kustomize-helmchart:
+        generate:
+          command:
+            - sh
+            - "-c"
+            - "kustomize build --enable-helm --load-restrictor=LoadRestrictionsNone . | argocd-vault-plugin generate -s argocd:argocd-vault-plugin-credentials -"
         lockRepo: false
 repoServer:
   name: repo-server
@@ -155,6 +162,23 @@ repoServer:
         - name: argocd-cmp-cm
           mountPath: /home/argocd/cmp-server/config/plugin.yaml
           subPath: kustomize-helmchart.yaml
+        - name: custom-tools
+          mountPath: /usr/local/bin/argocd-vault-plugin
+          subPath: argocd-vault-plugin
+    - name: avp-kustomize-helmchart
+      command: [/var/run/argocd/argocd-cmp-server]
+      image: quay.io/argoproj/argocd:v2.10.4
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+      volumeMounts:
+        - name: var-files
+          mountPath: /var/run/argocd
+        - name: plugins
+          mountPath: /home/argocd/cmp-server/plugins
+        - name: argocd-cmp-cm
+          mountPath: /home/argocd/cmp-server/config/plugin.yaml
+          subPath: argocd-vault-plugin-kustomize-helmchart.yaml
         - name: custom-tools
           mountPath: /usr/local/bin/argocd-vault-plugin
           subPath: argocd-vault-plugin
