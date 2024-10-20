@@ -3,6 +3,19 @@ global:
     level: info
 configs:
   cm:
+    resource.customizations.health.argoproj.io_Application: |
+      hs = {}
+      hs.status = "Progressing"
+      hs.message = ""
+      if obj.status ~= nil then
+        if obj.status.health ~= nil then
+          hs.status = obj.status.health.status
+          if obj.status.health.message ~= nil then
+            hs.message = obj.status.health.message
+          end
+        end
+      end
+      return hs   
     resource.customizations.ignoreDifferences.admissionregistration.k8s.io_MutatingWebhookConfiguration: |
       jqPathExpressions:
       - '.webhooks[]?.clientConfig.caBundle'
@@ -14,12 +27,12 @@ configs:
     plugins:
       argocd-vault-plugin-helm:
         allowConcurrency: true
-        discover:
-          find:
-            command:
-              - sh
-              - "-c"
-              - "find . -name 'Chart.yaml' && find . -name 'values.yaml'"
+        #discover:
+        #  find:
+        #    command:
+        #      - sh
+        #      - "-c"
+        #      - "find . -name 'Chart.yaml' && find . -name 'values.yaml'"
         generate:
           command:
             - bash
@@ -45,14 +58,14 @@ configs:
             - "-c"
             - "kustomize build . | argocd-vault-plugin generate -s argocd:argocd-vault-plugin-credentials -"
         lockRepo: false
-      kustomize-helmchart:
+      kustomize-helmcharts:
         generate:
           command:
             - sh
             - "-c"
             - "kustomize build --enable-helm --load-restrictor=LoadRestrictionsNone . "
         lockRepo: false
-      argocd-vault-plugin-kustomize-helmchart:
+      argocd-vault-plugin-kustomize-helmcharts:
         generate:
           command:
             - sh
@@ -148,7 +161,7 @@ repoServer:
         - name: custom-tools
           mountPath: /usr/local/bin/argocd-vault-plugin
           subPath: argocd-vault-plugin
-    - name: kustomize-helmchart
+    - name: kustomize-helmcharts
       command: [/var/run/argocd/argocd-cmp-server]
       image: quay.io/argoproj/argocd:v2.10.4
       securityContext:
@@ -161,11 +174,11 @@ repoServer:
           mountPath: /home/argocd/cmp-server/plugins
         - name: argocd-cmp-cm
           mountPath: /home/argocd/cmp-server/config/plugin.yaml
-          subPath: kustomize-helmchart.yaml
+          subPath: kustomize-helmcharts.yaml
         - name: custom-tools
           mountPath: /usr/local/bin/argocd-vault-plugin
           subPath: argocd-vault-plugin
-    - name: avp-kustomize-helmchart
+    - name: avp-kustomize-helmcharts
       command: [/var/run/argocd/argocd-cmp-server]
       image: quay.io/argoproj/argocd:v2.10.4
       securityContext:
@@ -178,7 +191,7 @@ repoServer:
           mountPath: /home/argocd/cmp-server/plugins
         - name: argocd-cmp-cm
           mountPath: /home/argocd/cmp-server/config/plugin.yaml
-          subPath: argocd-vault-plugin-kustomize-helmchart.yaml
+          subPath: argocd-vault-plugin-kustomize-helmcharts.yaml
         - name: custom-tools
           mountPath: /usr/local/bin/argocd-vault-plugin
           subPath: argocd-vault-plugin

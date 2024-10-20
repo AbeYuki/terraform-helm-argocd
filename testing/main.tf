@@ -44,7 +44,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/AbeYuki/argocd
+    repoURL: https://github.com/AbeYuki/argocd-apps
     path: app-of-apps/testing
     targetRevision: HEAD
   destination:
