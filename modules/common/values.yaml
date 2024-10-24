@@ -25,7 +25,7 @@ configs:
   cmp:
     create: true
     plugins:
-      argocd-vault-plugin-helm:
+      argocd-vault-plugin-helm: # plugin name
         allowConcurrency: true
         #discover:
         #  find:
@@ -41,7 +41,7 @@ configs:
               helm template $ARGOCD_APP_NAME -n $ARGOCD_APP_NAMESPACE -f <(echo "$ARGOCD_ENV_HELM_VALUES") . |
               argocd-vault-plugin generate -s argocd:argocd-vault-plugin-credentials -
         lockRepo: false
-      argocd-vault-plugin-kustomize:
+      argocd-vault-plugin-kustomize: # plugin name
         discover:
           find:
             command:
@@ -58,14 +58,14 @@ configs:
             - "-c"
             - "kustomize build . | argocd-vault-plugin generate -s argocd:argocd-vault-plugin-credentials -"
         lockRepo: false
-      kustomize-helmcharts:
+      kustomize-helmcharts: # plugin name
         generate:
           command:
             - sh
             - "-c"
             - "kustomize build --enable-helm --load-restrictor=LoadRestrictionsNone . "
         lockRepo: false
-      argocd-vault-plugin-kustomize-helmcharts:
+      argocd-vault-plugin-kustomize-helmcharts: # plugin name
         generate:
           command:
             - sh
