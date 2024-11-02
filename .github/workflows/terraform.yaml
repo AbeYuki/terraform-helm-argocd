@@ -14,30 +14,55 @@ env:
 jobs:
   terraform:
     runs-on: [self-hosted, kubernetes]
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Detect modified directory
+        id: detect
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            production:
+              - 'production/**'
+            staging:
+              - 'staging/**'
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version:  ${{ env.TF_VERSION }}
 
+      - name: Set working directory for Terraform
+        if: ${{ steps.detect.outputs.production == 'true' }}
+        run: echo "TF_WORKDIR=production" >> $GITHUB_ENV
+
+      - name: Set working directory for Terraform
+        if: ${{ steps.detect.outputs.staging == 'true' }}
+        run: echo "TF_WORKDIR=staging" >> $GITHUB_ENV
+
+      - name: Set working directory for Terraform
+        if: ${{ steps.detect.outputs.testing == 'true' }}
+        run: echo "TF_WORKDIR=testing" >> $GITHUB_ENV
+
       - name: Check format
         run: terraform fmt -check -recursive
+        working-directory: ${{ env.TF_WORKDIR }}
 
       - name: Initialize Terraform
         run: terraform init
+        working-directory: ${{ env.TF_WORKDIR }}
 
       - name: Terraform Plan
         run: terraform plan -out=tfplan
+        working-directory: ${{ env.TF_WORKDIR }}
 
       - name: Upload Plan
         uses: actions/upload-artifact@v3
         with:
           name: tfplan
-          path: tfplan
+          path: ${{ env.TF_WORKDIR }}/tfplan
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
+        run: terraform apply -auto-approve ${{ env.TF_WORKDIR }}/tfplan
+        working-directory: ${{ env.TF_WORKDIR }}
