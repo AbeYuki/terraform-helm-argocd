@@ -31,21 +31,21 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version:  ${{ env.TF_VERSION }}
+          terraform_version: ${{ env.TF_VERSION }}
 
-      - name: Set working directory for Terraform
+      - name: Set working directory for Terraform - Production
         if: ${{ steps.detect.outputs.production == 'true' }}
         run: echo "TF_WORKDIR=production" >> $GITHUB_ENV
 
-      - name: Set working directory for Terraform
+      - name: Set working directory for Terraform - Staging
         if: ${{ steps.detect.outputs.staging == 'true' }}
         run: echo "TF_WORKDIR=staging" >> $GITHUB_ENV
 
-      - name: Set working directory for Terraform
+      - name: Set working directory for Terraform - Testing
         if: ${{ steps.detect.outputs.testing == 'true' }}
         run: echo "TF_WORKDIR=testing" >> $GITHUB_ENV
 
-      - name: Check format
+      - name: Check Terraform format
         run: terraform fmt -check -recursive
         working-directory: ${{ env.TF_WORKDIR }}
 
