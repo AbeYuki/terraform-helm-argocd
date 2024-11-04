@@ -5,11 +5,11 @@ terraform {
       version = "2.10.1"
     }
     kubernetes = {
-      source = "hashicorp/kubernetes"
+      source  = "hashicorp/kubernetes"
       version = "2.27.0"
     }
     kubectl = {
-      source = "gavinbunney/kubectl"
+      source  = "gavinbunney/kubectl"
       version = "1.14.0"
     }
   }
@@ -35,7 +35,7 @@ module "common" {
 }
 
 resource "kubectl_manifest" "app_of_apps" {
-    yaml_body = <<YAML
+  yaml_body = <<YAML
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
