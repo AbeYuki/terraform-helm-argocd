@@ -4,7 +4,7 @@ on:
   pull_request:
 
 jobs:
-  terraform-plan:
+  terraform-plan-production:
     runs-on: [self-hosted, kubernetes]
     container:
       image: hashicorp/terraform:latest

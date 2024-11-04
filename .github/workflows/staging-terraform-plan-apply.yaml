@@ -6,7 +6,7 @@ on:
       - staging
 
 jobs:
-  terraform-plan-apply:
+  terraform-plan-apply-staging:
     runs-on: [self-hosted, kubernetes]
     container:
       image: hashicorp/terraform:latest
@@ -18,7 +18,7 @@ jobs:
           printf "%s" "${{ secrets.KUBE_CONFIG_STAGING }}" > ~/.kube/config_rke_oci
 
       - name: Checkout repository
-        run: git clone https://github.com/${{ github.repository }} ${{ github.repository }}
+        run: git clone -b staging https://github.com/${{ github.repository }} ${{ github.repository }}
 
       - name: Initialize Terraform
         env:

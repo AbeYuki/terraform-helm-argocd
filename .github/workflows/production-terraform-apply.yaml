@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  terraform-apply:
+  terraform-apply-production:
     runs-on: [self-hosted, kubernetes]
     container:
       image: hashicorp/terraform:latest
