@@ -1,0 +1,32 @@
+name: Terraform Plan && Apply
+
+on:
+  push:
+    branches:
+      - staging
+    paths:
+      - 'staging/**'
+
+jobs:
+  terraform-plan:
+    runs-on: [self-hosted, kubernetes]
+    container:
+      image: hashicorp/terraform:latest
+    steps:
+      - name: Install git
+        run: apk add --no-cache git
+
+      - name: Checkout repository
+        run: git clone https://github.com/${{ github.repository }} ${{ github.repository }}
+
+      - name: Initialize Terraform
+        run: terraform init
+        working-directory: ${{ github.repository }}/staging
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+        working-directory: ${{ github.repository }}/staging
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        working-directory: ${{ github.repository }}/staging

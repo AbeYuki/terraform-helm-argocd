@@ -1,0 +1,28 @@
+name: Terraform Apply on Merge
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'production/**'
+
+jobs:
+  terraform-apply:
+    runs-on: [self-hosted, kubernetes]
+    container:
+      image: hashicorp/terraform:latest
+    steps:
+      - name: Install git
+        run: apk add --no-cache git
+
+      - name: Checkout repository
+        run: git clone https://github.com/${{ github.repository }} ${{ github.repository }}
+
+      - name: Initialize Terraform
+        run: terraform init
+        working-directory: ${{ github.repository }}/production
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        working-directory: ${{ github.repository }}/production
