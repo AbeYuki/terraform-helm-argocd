@@ -10,9 +10,10 @@ jobs:
       image: hashicorp/terraform:latest
     steps:
       - name: Install git
-        run: apk add --no-cache git
+        run: |
+          apk add --no-cache git
           mkdir -p ~/.kube/
-          printf "%s" "${{ secrets.KUBE_CONFIG_STAGING }}" > ~/.kube/config_k3s_node2
+          printf "%s" "${{ secrets.KUBE_CONFIG_PRODUCTION }}" > ~/.kube/config_rke_oci
 
       - name: Checkout repository
         run: git clone https://github.com/${{ github.repository }} ${{ github.repository }}
