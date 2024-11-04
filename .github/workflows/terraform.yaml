@@ -26,13 +26,10 @@ jobs:
 
       - name: Detect modified directory
         id: detect
-        uses: dorny/paths-filter@v2
-        with:
-          filters: |
-            production:
-              - 'production/**'
-            staging:
-              - 'staging/**'
+        run: |
+          if git diff --name-only HEAD^ | grep -q '^production/'; then echo "TF_WORKDIR=production" >> $GITHUB_ENV; fi
+          if git diff --name-only HEAD^ | grep -q '^staging/'; then echo "TF_WORKDIR=staging" >> $GITHUB_ENV; fi
+          if git diff --name-only HEAD^ | grep -q '^testing/'; then echo "TF_WORKDIR=testing" >> $GITHUB_ENV; fi
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
