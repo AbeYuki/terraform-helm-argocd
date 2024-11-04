@@ -27,19 +27,16 @@ jobs:
           ls -la repo
 
       - name: Set working directory and detect modified directory
-        working-directory: repo
         run: |
-          if git diff --name-only HEAD^ | grep -q '^production/'; then echo "TF_WORKDIR=production" >> $GITHUB_ENV; fi
-          if git diff --name-only HEAD^ | grep -q '^staging/'; then echo "TF_WORKDIR=staging" >> $GITHUB_ENV; fi
-          if git diff --name-only HEAD^ | grep -q '^testing/'; then echo "TF_WORKDIR=testing" >> $GITHUB_ENV; fi
+          if git diff --name-only HEAD^ | grep -q '^production/'; then echo "TF_WORKDIR=repo/production" >> $GITHUB_ENV; fi
+          if git diff --name-only HEAD^ | grep -q '^staging/'; then echo "TF_WORKDIR=repo/staging" >> $GITHUB_ENV; fi
+          if git diff --name-only HEAD^ | grep -q '^testing/'; then echo "TF_WORKDIR=repo/testing" >> $GITHUB_ENV; fi
 
       - name: Check Terraform format
-        run: terraform fmt -check -recursive
-        working-directory: ${{ env.TF_WORKDIR }}
+        run: terraform fmt -check -recursive ${{ env.TF_WORKDIR }}
       
       - name: Initialize Terraform
-        run: terraform init
-        working-directory: ${{ env.TF_WORKDIR }}
+        run: terraform init ${{ env.TF_WORKDIR }}
 
       - name: Terraform Plan
         run: terraform plan -out=tfplan
