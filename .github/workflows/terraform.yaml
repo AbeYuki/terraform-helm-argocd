@@ -19,7 +19,7 @@ jobs:
       image: hashicorp/terraform:latest
     steps:
       - name: Install git
-        run: apt-get update && apt-get install -y git
+        run: apk add --no-cache git
 
       - name: Clone repository
         run: git clone https://github.com/${{ github.repository }} .
