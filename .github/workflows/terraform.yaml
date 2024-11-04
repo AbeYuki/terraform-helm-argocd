@@ -15,6 +15,8 @@ env:
 jobs:
   terraform:
     runs-on: [self-hosted, kubernetes]
+    container:
+      image: hashicorp/terraform:latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
