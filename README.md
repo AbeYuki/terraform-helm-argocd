@@ -3,6 +3,7 @@
 ## argocd helm
 
 https://github.com/argoproj/argo-helm
+https://artifacthub.io/packages/helm/argo/argo-cd
 
 ### deploy
 
