@@ -1,4 +1,4 @@
-name: Terraform Plan && Apply
+name: '[staging]Terraform Plan to Apply'
 
 on:
   push:

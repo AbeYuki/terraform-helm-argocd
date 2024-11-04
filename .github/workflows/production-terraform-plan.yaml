@@ -1,4 +1,4 @@
-name: Terraform Plan on PR
+name: '[Production]Terraform Plan on PR'
 
 on:
   pull_request:

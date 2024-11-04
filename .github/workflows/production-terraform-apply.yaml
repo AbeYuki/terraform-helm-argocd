@@ -1,4 +1,4 @@
-name: Terraform Apply on Merge
+name: '[Production]Terraform Apply on Merge'
 
 on:
   push:
