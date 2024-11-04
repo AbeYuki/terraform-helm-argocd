@@ -18,6 +18,12 @@ jobs:
     container:
       image: hashicorp/terraform:latest
     steps:
+      - name: Prepare Alpine arm64
+        run: |
+          apk add gcompat
+          sed -i "s/ID=alpine/ID=armpine/" /etc/os-release
+        if: ${{ matrix.arch == 'arm64' && contains(matrix.image, 'alpine') }}
+
       - name: Checkout repository
         uses: actions/checkout@v3
 
