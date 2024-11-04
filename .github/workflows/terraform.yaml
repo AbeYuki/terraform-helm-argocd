@@ -24,29 +24,20 @@ jobs:
       - name: Clone repository
         run: git clone https://github.com/${{ github.repository }} .
 
+      - name: Install Terraform
+        run: |
+          T_VERSION=${{ env.TF_VERSION }}
+          wget https://releases.hashicorp.com/terraform/${T_VERSION}/terraform_${T_VERSION}_linux_arm64.zip
+          unzip terraform_${T_VERSION}_linux_arm64.zip
+          mv terraform /usr/local/bin/
+        env:
+          TF_VERSION: "1.5.0"
+
       - name: Detect modified directory
-        id: detect
         run: |
           if git diff --name-only HEAD^ | grep -q '^production/'; then echo "TF_WORKDIR=production" >> $GITHUB_ENV; fi
           if git diff --name-only HEAD^ | grep -q '^staging/'; then echo "TF_WORKDIR=staging" >> $GITHUB_ENV; fi
           if git diff --name-only HEAD^ | grep -q '^testing/'; then echo "TF_WORKDIR=testing" >> $GITHUB_ENV; fi
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: ${{ env.TF_VERSION }}
-
-      - name: Set working directory for Terraform - Production
-        if: ${{ steps.detect.outputs.production == 'true' }}
-        run: echo "TF_WORKDIR=production" >> $GITHUB_ENV
-
-      - name: Set working directory for Terraform - Staging
-        if: ${{ steps.detect.outputs.staging == 'true' }}
-        run: echo "TF_WORKDIR=staging" >> $GITHUB_ENV
-
-      - name: Set working directory for Terraform - Testing
-        if: ${{ steps.detect.outputs.testing == 'true' }}
-        run: echo "TF_WORKDIR=testing" >> $GITHUB_ENV
 
       - name: Check Terraform format
         run: terraform fmt -check -recursive
