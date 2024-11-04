@@ -22,19 +22,12 @@ jobs:
         run: apk add --no-cache git
 
       - name: Clone repository
-        run: git clone https://github.com/${{ github.repository }} repo
-        working-directory: repo
-
-      - name: Install Terraform
         run: |
-          T_VERSION=${{ env.TF_VERSION }}
-          wget https://releases.hashicorp.com/terraform/${T_VERSION}/terraform_${T_VERSION}_linux_arm64.zip
-          unzip terraform_${T_VERSION}_linux_arm64.zip
-          mv terraform /usr/local/bin/
-        env:
-          TF_VERSION: "1.5.0"
+          git clone https://github.com/${{ github.repository }} repo
+          ls -la repo
 
-      - name: Detect modified directory
+      - name: Set working directory and detect modified directory
+        working-directory: repo
         run: |
           if git diff --name-only HEAD^ | grep -q '^production/'; then echo "TF_WORKDIR=production" >> $GITHUB_ENV; fi
           if git diff --name-only HEAD^ | grep -q '^staging/'; then echo "TF_WORKDIR=staging" >> $GITHUB_ENV; fi
@@ -43,7 +36,7 @@ jobs:
       - name: Check Terraform format
         run: terraform fmt -check -recursive
         working-directory: ${{ env.TF_WORKDIR }}
-
+      
       - name: Initialize Terraform
         run: terraform init
         working-directory: ${{ env.TF_WORKDIR }}
@@ -51,13 +44,7 @@ jobs:
       - name: Terraform Plan
         run: terraform plan -out=tfplan
         working-directory: ${{ env.TF_WORKDIR }}
-
-      - name: Upload Plan
-        uses: actions/upload-artifact@v3
-        with:
-          name: tfplan
-          path: ${{ env.TF_WORKDIR }}/tfplan
-
+      
       - name: Terraform Apply
-        run: terraform apply -auto-approve ${{ env.TF_WORKDIR }}/tfplan
+        run: terraform apply -auto-approve tfplan
         working-directory: ${{ env.TF_WORKDIR }}
