@@ -6,7 +6,7 @@ on:
       - staging
 
 jobs:
-  terraform-plan:
+  terraform-plan-apply:
     runs-on: [self-hosted, kubernetes]
     container:
       image: hashicorp/terraform:latest

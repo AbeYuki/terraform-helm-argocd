@@ -2,8 +2,6 @@ name: '[Production]Terraform Plan on PR'
 
 on:
   pull_request:
-    paths:
-      - 'production/**'
 
 jobs:
   terraform-plan:
@@ -13,14 +11,22 @@ jobs:
     steps:
       - name: Install git
         run: apk add --no-cache git
+          mkdir -p ~/.kube/
+          printf "%s" "${{ secrets.KUBE_CONFIG_STAGING }}" > ~/.kube/config_k3s_node2
 
       - name: Checkout repository
         run: git clone https://github.com/${{ github.repository }} ${{ github.repository }}
 
       - name: Initialize Terraform
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: terraform init
         working-directory: ${{ github.repository }}/production
 
       - name: Terraform Plan
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: terraform plan -out=tfplan
         working-directory: ${{ github.repository }}/production
