@@ -18,14 +18,11 @@ jobs:
     container:
       image: hashicorp/terraform:latest
     steps:
-      - name: Prepare Alpine arm64
-        run: |
-          apk add gcompat
-          sed -i "s/ID=alpine/ID=armpine/" /etc/os-release
-        if: ${{ matrix.arch == 'arm64' && contains(matrix.image, 'alpine') }}
+      - name: Install git
+        run: apt-get update && apt-get install -y git
 
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Clone repository
+        run: git clone https://github.com/${{ github.repository }} .
 
       - name: Detect modified directory
         id: detect
