@@ -7,7 +7,7 @@ on:
 
 jobs:
   terraform-apply-production:
-    runs-on: [self-hosted, kubernetes]
+    runs-on: [self-hosted, kubernetes, arm64]
     container:
       image: hashicorp/terraform:latest
     steps:
