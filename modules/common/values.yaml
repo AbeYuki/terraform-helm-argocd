@@ -3,7 +3,7 @@ global:
     level: info
 configs:
   cm:
-    exec.enabled: false
+    exec.enabled: true
     resource.customizations.health.argoproj.io_Application: |
       hs = {}
       hs.status = "Progressing"
