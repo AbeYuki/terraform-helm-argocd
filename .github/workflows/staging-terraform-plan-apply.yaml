@@ -3,7 +3,8 @@ name: '[staging]Terraform Plan to Apply'
 on:
   push:
     branches:
-      - staging
+      - staging/**
+      - staging*
 
 jobs:
   terraform-plan-apply-staging:
