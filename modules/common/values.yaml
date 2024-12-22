@@ -75,11 +75,11 @@ configs:
         lockRepo: false
 repoServer:
   name: repo-server
-  replicas: 2
+  replicas: 1
   autoscaling:
     enabled: true
-    minReplicas: 2
-    maxReplicas: 5
+    minReplicas: 1
+    maxReplicas: 2
     targetCPUUtilizationPercentage: 50
     targetMemoryUtilizationPercentage: 50
     behavior:
@@ -212,11 +212,11 @@ repoServer:
       subPath: argocd-vault-plugin
 server:
   name: server
-  replicas: 2
+  replicas: 1
   autoscaling:
     enabled: true
-    minReplicas: 2
-    maxReplicas: 5
+    minReplicas: 1
+    maxReplicas: 2
     targetCPUUtilizationPercentage: 50
     targetMemoryUtilizationPercentage: 50
     behavior:
