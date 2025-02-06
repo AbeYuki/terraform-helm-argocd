@@ -1,7 +1,6 @@
 name: Sync staging with main
 
 on:
-  workflow_dispatch: 
   workflow_run:
     workflows: ["[Production]Terraform Apply on Merge"]
     types:
