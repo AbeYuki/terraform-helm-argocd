@@ -19,11 +19,10 @@ jobs:
       image: hashicorp/terraform:latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+        run: git clone https://github.com/${{ github.repository }} ${{ github.repository }}
 
       - name: Sync origin/main to origin/staging
+        working-directory: ${{ github.repository }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
