@@ -1,11 +1,11 @@
 name: Sync staging with main
 
 on:
-  workflow_run:
-    workflows: 
-      - '[Production]Terraform Apply on Merge'
+  pull_request:
+    branches:
+      - main
     types:
-      - completed
+      - closed
   workflow_dispatch:
 
 permissions:
@@ -14,7 +14,7 @@ permissions:
 jobs:
   sync-staging-bot:
     runs-on: [self-hosted, kubernetes, arm64]
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
     container:
       image: hashicorp/terraform:latest
     steps:
