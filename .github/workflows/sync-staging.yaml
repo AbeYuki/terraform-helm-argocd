@@ -15,6 +15,8 @@ jobs:
   sync-staging-bot:
     runs-on: [self-hosted, kubernetes, arm64]
     if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    container:
+      image: hashicorp/terraform:latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
