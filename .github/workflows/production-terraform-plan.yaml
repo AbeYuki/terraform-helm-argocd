@@ -6,6 +6,7 @@ on:
 jobs:
   terraform-plan-production:
     runs-on: [self-hosted, kubernetes, arm64]
+    if: github.actor != 'github-actions[bot]'
     container:
       image: hashicorp/terraform:latest
     steps:
