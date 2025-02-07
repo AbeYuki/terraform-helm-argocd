@@ -21,7 +21,7 @@ jobs:
       - name: Checkout repository
         run: git clone https://github.com/${{ github.repository }} ${{ github.repository }}
 
-      - name: Sync origin/main to origin/staging
+      - name: Merge main into staging
         working-directory: ${{ github.repository }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -30,4 +30,6 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
           git fetch origin
-          git push origin origin/main:staging --force
+          git checkout staging
+          git merge --no-ff origin/main -m "github-actions[bot]Merge main into staging"
+          git push origin staging
