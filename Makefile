@@ -1,6 +1,9 @@
 
 staging-deploy:
-	git fetch -a
-	git checkout staging 2>/dev/null || git checkout -b staging origin/staging
-	git merge --no-ff origin/main
-	git push origin staging
+	@CURRENT_BRANCH=$$(git symbolic-ref --short HEAD) && \
+	echo "Current branch: $$CURRENT_BRANCH" && \
+	git fetch origin && \
+	git checkout staging && \
+	git merge --no-ff $$CURRENT_BRANCH -m "Merge from $$CURRENT_BRANCH" && \
+	git push origin staging && \
+	git checkout $$CURRENT_BRANCH
