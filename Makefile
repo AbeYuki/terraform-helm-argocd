@@ -11,3 +11,4 @@ deploy-staging:
 	git merge --no-ff $$CURRENT_BRANCH -m "Merge from $$CURRENT_BRANCH" && \
 	git push origin staging && \
 	git checkout $$CURRENT_BRANCH
+	git branch -D staging
