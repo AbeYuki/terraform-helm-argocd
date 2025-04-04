@@ -10,7 +10,7 @@ deploy-staging:
 	(git branch -D staging 2>/dev/null || true) && \
 	(git checkout -b staging origin/staging 2>/dev/null || git checkout -b staging origin/main) && \
 	echo "$$CURRENT_BRANCH ブランチの変更を staingブランチにマージします" && \
-	git merge --no-ff $$CURRENT_BRANCH -m "Merge from $$CURRENT_BRANCH" && \
+	git merge --no-ff $$CURRENT_BRANCH -m "Merge from $$CURRENT_BRANCH by 'make deploy-staging'" && \
 	git push origin staging && \
 	git checkout $$CURRENT_BRANCH && \
 	echo "staging ブランチを削除します" && \
