@@ -14,10 +14,14 @@ resource "kubernetes_secret" "argocd_vault_plugin" {
     namespace = "argocd"
   }
   data = {
-    "AVP_AUTH_TYPE" = "k8s"
-    "AVP_K8S_ROLE"  = "argocd"
-    "AVP_TYPE"      = "vault"
-    "VAULT_ADDR"    = "http://vault.vault.svc.cluster.local:8200"
+    "AVP_AUTH_TYPE"     = "k8s"
+    "AVP_K8S_ROLE"      = "argocd"
+    "AVP_TYPE"          = "vault"
+    "VAULT_ADDR"        = "https://vault.vault.svc.cluster.local:8200"
+    "VAULT_SKIP_VERIFY" = "false"
+    "VAULT_CACERT"      = "/vault/tls/vault.ca"
+    "VAULT_CLIENT_CERT" = "/vault/tls/vault.crt"
+    "VAULT_CLIENT_KEY"  = "/vault/tls/vault.key"
   }
   type = "Opaque"
   depends_on = [

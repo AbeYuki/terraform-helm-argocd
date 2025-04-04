@@ -145,6 +145,9 @@ repoServer:
         - name: custom-tools
           mountPath: /usr/local/bin/argocd-vault-plugin
           subPath: argocd-vault-plugin
+        - name: vault-tls
+          mountPath: /vault/tls
+          readOnly: true
     - name: avp-kustomize
       command: [/var/run/argocd/argocd-cmp-server]
       image: quay.io/argoproj/argocd:v2.10.4
@@ -162,6 +165,9 @@ repoServer:
         - name: custom-tools
           mountPath: /usr/local/bin/argocd-vault-plugin
           subPath: argocd-vault-plugin
+        - name: vault-tls
+          mountPath: /vault/tls
+          readOnly: true
     - name: kustomize-helmcharts
       command: [/var/run/argocd/argocd-cmp-server]
       image: quay.io/argoproj/argocd:v2.10.4
@@ -179,6 +185,9 @@ repoServer:
         - name: custom-tools
           mountPath: /usr/local/bin/argocd-vault-plugin
           subPath: argocd-vault-plugin
+        - name: vault-tls
+          mountPath: /vault/tls
+          readOnly: true
     - name: avp-kustomize-helmcharts
       command: [/var/run/argocd/argocd-cmp-server]
       image: quay.io/argoproj/argocd:v2.10.4
@@ -196,6 +205,9 @@ repoServer:
         - name: custom-tools
           mountPath: /usr/local/bin/argocd-vault-plugin
           subPath: argocd-vault-plugin
+        - name: vault-tls
+          mountPath: /vault/tls
+          readOnly: true
   volumes:
     - name: argocd-cmp-cm
       configMap:
@@ -204,12 +216,18 @@ repoServer:
       emptyDir: {}
     - name: custom-tools
       emptyDir: {}
+    - name: vault-tls
+      secret:
+        secretName: vault-ha-tls
   volumeMounts:
     - name: argocd-cmp-cm
       mountPath: /home/argocd/cmp-server/config
     - name: custom-tools
       mountPath: /usr/local/bin/argocd-vault-plugin
       subPath: argocd-vault-plugin
+    - name: vault-tls
+      mountPath: /vault/tls
+      readOnly: true
 server:
   name: server
   replicas: 1
