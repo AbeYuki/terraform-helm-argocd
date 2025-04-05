@@ -5,6 +5,9 @@ on:
     branches:
       - staging/**
       - staging*
+    paths:
+      - 'staging/**'
+      - 'module/**'
 
 jobs:
   terraform-plan-apply-staging:
