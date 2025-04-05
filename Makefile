@@ -8,7 +8,7 @@ deploy-staging:
 	git fetch origin && \
 	echo "staging ブランチを作成します。" && \
 	(git branch -D staging 2>/dev/null || true) && \
-	(git checkout -b staging origin/staging 2>/dev/null || git checkout -b staging origin/main) && \
+	git checkout -b staging origin/main && \ && \
 	echo "$$CURRENT_BRANCH ブランチの変更を staing ブランチにマージします。" && \
 	git merge --no-ff $$CURRENT_BRANCH -m "Merge from $$CURRENT_BRANCH by 'make deploy-staging'" && \
 	git push origin staging && \
