@@ -6,7 +6,7 @@ deploy-staging:
 		exit 1; \
 	fi && \
 	if ! git diff-index --quiet HEAD --; then \
-		echo "[ERROR] 未コミットの変更があります。commit してください。" && exit 1; \
+		echo "[ERROR] commit されていない変更があります。commit してください。" && exit 1; \
 	fi && \
 	echo "[INFO] 現在のブランチ: $$CURRENT_BRANCH" && \
 	git fetch origin && \
