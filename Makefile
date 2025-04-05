@@ -1,6 +1,6 @@
 
 deploy-staging:
-	@CURRENT_BRANCH=$$(git symbolic-ref --short HEAD) && \
+	@CURRENT_BRANCH=$$(git symbolic-ref --short HEAD); \
 	if [ "$$CURRENT_BRANCH" = "main" ] || [ "$$CURRENT_BRANCH" = "master" ]; then \
 		echo "'$$CURRENT_BRANCH' ブランチからは deploy-staging は実行できません。開発用ブランチで実行してください。"; \
 		exit 1; \
@@ -13,7 +13,9 @@ deploy-staging:
 	echo "staging ブランチを作成します。" && \
 	(git branch -D staging 2>/dev/null || true) && \
 	git checkout -b staging origin/main && \
-	echo "$$CURRENT_BRANCH ブランチの変更を staing ブランチにマージします。" && \
+	echo "origin/staging をマージして履歴を保持します。" && \
+	(git merge --no-ff origin/staging -m "Merge origin/staging into staging" || true) && \
+	echo "$$CURRENT_BRANCH ブランチの変更を staging ブランチにマージします。" && \
 	git merge --no-ff $$CURRENT_BRANCH -m "Merge from $$CURRENT_BRANCH by 'make deploy-staging'" && \
 	git push origin staging && \
 	git checkout $$CURRENT_BRANCH && \
