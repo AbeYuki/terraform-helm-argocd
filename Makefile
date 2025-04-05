@@ -15,8 +15,9 @@ deploy-staging:
 	git checkout -b staging origin/main && \
 	echo "[INFO] staging ブランチに origin/staging の履歴を取り込みます。" && \
 	(git merge --no-ff origin/staging -m "Merge origin/staging into staging by 'make deploy-staging'" || true) && \
-	echo "$$CURRENT_BRANCH ブランチの変更を staging ブランチにマージします。" && \
+	echo "[INFO] $$CURRENT_BRANCH ブランチの変更を staging ブランチにマージします。" && \
 	git merge --no-ff $$CURRENT_BRANCH -m "Merge from $$CURRENT_BRANCH by 'make deploy-staging'" && \
+	echo "[INFO] origin/staging に push します。" && \
 	git push origin staging && \
 	git checkout $$CURRENT_BRANCH && \
 	echo "[INFO] staging ブランチを削除します。" && \
