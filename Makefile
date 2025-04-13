@@ -9,17 +9,13 @@ deploy-staging:
 	fi && \
 	echo "[INFO] 現在のブランチ: $$CURRENT_BRANCH" && \
 	git fetch origin && \
-	echo "[INFO] origin/main から staging ブランチを作成します。" && \
+	echo "[INFO] origin/staging から新しいローカル staging ブランチを作成します。" && \
 	(git branch -D staging 2>/dev/null || true) && \
-	git checkout -b staging origin/main && \
-	echo "[INFO] staging ブランチに origin/staging の履歴を取り込みます。" && \
-	(git merge --no-ff origin/staging -m "Merge origin/staging into staging by 'make deploy-staging'" || true) && \
-	echo "[INFO] $$CURRENT_BRANCH ブランチの変更を staging ブランチにマージします。" && \
-	git merge --no-ff $$CURRENT_BRANCH -m "Merge from $$CURRENT_BRANCH by 'make deploy-staging'" && \
-	echo "[INFO] origin/staging の最新状態と rebase します。" && \
-	git pull --rebase origin staging && \
-	echo "[INFO] origin/staging に push します。" && \
-	git push origin staging && \
+	git checkout -b staging origin/staging && \
+	echo "[INFO] $$CURRENT_BRANCH の変更を staging に rebase します。" && \
+	git rebase $$CURRENT_BRANCH && \
+	echo "[INFO] origin/staging に強制 push します。" && \
+	git push --force origin staging && \
 	git checkout $$CURRENT_BRANCH && \
 	echo "[INFO] staging ブランチを削除します。" && \
 	git branch -D staging
