@@ -1,4 +1,3 @@
-
 deploy-staging:
 	@CURRENT_BRANCH=$$(git symbolic-ref --short HEAD); \
 	if [ "$$CURRENT_BRANCH" = "main" ] || [ "$$CURRENT_BRANCH" = "master" ]; then \
@@ -17,6 +16,8 @@ deploy-staging:
 	(git merge --no-ff origin/staging -m "Merge origin/staging into staging by 'make deploy-staging'" || true) && \
 	echo "[INFO] $$CURRENT_BRANCH ブランチの変更を staging ブランチにマージします。" && \
 	git merge --no-ff $$CURRENT_BRANCH -m "Merge from $$CURRENT_BRANCH by 'make deploy-staging'" && \
+	echo "[INFO] origin/staging の最新状態と rebase します。" && \
+	git pull --rebase origin staging && \
 	echo "[INFO] origin/staging に push します。" && \
 	git push origin staging && \
 	git checkout $$CURRENT_BRANCH && \
