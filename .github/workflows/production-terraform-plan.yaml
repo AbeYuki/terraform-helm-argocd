@@ -2,6 +2,8 @@ name: '[Production]Terraform Plan on PR'
 
 on:
   pull_request:
+    branches:
+      - main
     paths:
       - 'module/**'
       - 'production/**'
