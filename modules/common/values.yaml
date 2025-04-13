@@ -26,22 +26,30 @@ configs:
   cmp:
     create: true
     plugins:
-      argocd-vault-plugin-helm: # plugin name
-        allowConcurrency: true
-        #discover:
-        #  find:
-        #    command:
-        #      - sh
-        #      - "-c"
-        #      - "find . -name 'Chart.yaml' && find . -name 'values.yaml'"
+      helm-template: # plugin name
         generate:
-          command:
-            - bash
-            - "-c"
-            - |
-              helm template $ARGOCD_APP_NAME -n $ARGOCD_APP_NAMESPACE -f <(echo "$ARGOCD_ENV_HELM_VALUES") . |
-              argocd-vault-plugin generate -s argocd:argocd-vault-plugin-credentials -
-        lockRepo: false
+          command: [bash, -c]
+          args:
+          - |
+            helm template $ARGOCD_APP_NAME ../charts \
+              -f ../charts/values.yaml \
+              -f values.yaml
+      helm-template-avp: # plugin name
+        generate:
+          command: [bash, -c]
+          args:
+          - |
+            helm template $ARGOCD_APP_NAME ../charts \
+              -f ../charts/values.yaml \
+              -f values.yaml |
+            argocd-vault-plugin generate -s argocd:argocd-vault-plugin-credentials -
+      helmfile: # plugin name
+        init:
+          command: [sh, -c]
+          args: ["helmfile deps"]
+        generate:
+          command: [sh, -c]
+          args: ["helmfile -e $ARGOCD_ENV_ENVIRONMENT template"]
       argocd-vault-plugin-kustomize: # plugin name
         discover:
           find:
@@ -116,19 +124,30 @@ repoServer:
       env:
         - name: AVP_VERSION
           value: "1.17.0"
+        - name: HELMFILE_VERSION
+          value: "0.171.0"
         - name: CPU_ARCHITECTURE
           value: "linux_arm64"
       command: [sh, -c]
-      args:
-        - >-
-          wget -O argocd-vault-plugin https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v${AVP_VERSION}/argocd-vault-plugin_${AVP_VERSION}_${CPU_ARCHITECTURE} &&
-          chmod +x argocd-vault-plugin &&
-          mv argocd-vault-plugin custom-tools/
+      args: 
+        - |
+          set -e
+          apk add --no-cache wget tar
+          mkdir -p /custom-tools
+          # argocd-vault-plugin
+          wget -q -O /custom-tools/argocd-vault-plugin \
+            https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v${AVP_VERSION}/argocd-vault-plugin_${AVP_VERSION}_${CPU_ARCHITECTURE}
+          chmod +x /custom-tools/argocd-vault-plugin
+          # helmfile
+          wget -q -O /tmp/helmfile.tar.gz \
+            https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_${CPU_ARCHITECTURE}.tar.gz
+          tar -xz -C /custom-tools -f /tmp/helmfile.tar.gz helmfile
+          chmod +x /custom-tools/helmfile
       volumeMounts:
         - mountPath: /custom-tools
           name: custom-tools
   extraContainers:
-    - name: avp-helm
+    - name: helm-template
       command: [/var/run/argocd/argocd-cmp-server]
       image: quay.io/argoproj/argocd:v2.10.4
       securityContext:
@@ -141,10 +160,59 @@ repoServer:
           mountPath: /home/argocd/cmp-server/plugins
         - name: argocd-cmp-cm
           mountPath: /home/argocd/cmp-server/config/plugin.yaml
-          subPath: argocd-vault-plugin-helm.yaml
+          subPath: helm-template.yaml
         - name: custom-tools
           mountPath: /usr/local/bin/argocd-vault-plugin
           subPath: argocd-vault-plugin
+        - name: custom-tools
+          mountPath: /usr/local/bin/helmfile
+          subPath: helmfile
+        - name: vault-tls
+          mountPath: /vault/tls
+          readOnly: true
+    - name: helm-template-avp
+      command: [/var/run/argocd/argocd-cmp-server]
+      image: quay.io/argoproj/argocd:v2.10.4
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+      volumeMounts:
+        - name: var-files
+          mountPath: /var/run/argocd
+        - name: plugins
+          mountPath: /home/argocd/cmp-server/plugins
+        - name: argocd-cmp-cm
+          mountPath: /home/argocd/cmp-server/config/plugin.yaml
+          subPath: helm-template-avp.yaml
+        - name: custom-tools
+          mountPath: /usr/local/bin/argocd-vault-plugin
+          subPath: argocd-vault-plugin
+        - name: custom-tools
+          mountPath: /usr/local/bin/helmfile
+          subPath: helmfile
+        - name: vault-tls
+          mountPath: /vault/tls
+          readOnly: true
+    - name: helmfile
+      command: [/var/run/argocd/argocd-cmp-server]
+      image: quay.io/argoproj/argocd:v2.10.4
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+      volumeMounts:
+        - name: var-files
+          mountPath: /var/run/argocd
+        - name: plugins
+          mountPath: /home/argocd/cmp-server/plugins
+        - name: argocd-cmp-cm
+          mountPath: /home/argocd/cmp-server/config/plugin.yaml
+          subPath: helmfile.yaml
+        - name: custom-tools
+          mountPath: /usr/local/bin/argocd-vault-plugin
+          subPath: argocd-vault-plugin
+        - name: custom-tools
+          mountPath: /usr/local/bin/helmfile
+          subPath: helmfile
         - name: vault-tls
           mountPath: /vault/tls
           readOnly: true
@@ -165,6 +233,9 @@ repoServer:
         - name: custom-tools
           mountPath: /usr/local/bin/argocd-vault-plugin
           subPath: argocd-vault-plugin
+        - name: custom-tools
+          mountPath: /usr/local/bin/helmfile
+          subPath: helmfile
         - name: vault-tls
           mountPath: /vault/tls
           readOnly: true
@@ -185,6 +256,9 @@ repoServer:
         - name: custom-tools
           mountPath: /usr/local/bin/argocd-vault-plugin
           subPath: argocd-vault-plugin
+        - name: custom-tools
+          mountPath: /usr/local/bin/helmfile
+          subPath: helmfile
         - name: vault-tls
           mountPath: /vault/tls
           readOnly: true
@@ -205,6 +279,9 @@ repoServer:
         - name: custom-tools
           mountPath: /usr/local/bin/argocd-vault-plugin
           subPath: argocd-vault-plugin
+        - name: custom-tools
+          mountPath: /usr/local/bin/helmfile
+          subPath: helmfile
         - name: vault-tls
           mountPath: /vault/tls
           readOnly: true
@@ -225,6 +302,9 @@ repoServer:
     - name: custom-tools
       mountPath: /usr/local/bin/argocd-vault-plugin
       subPath: argocd-vault-plugin
+    - name: custom-tools
+      mountPath: /usr/local/bin/helmfile
+      subPath: helmfile
     - name: vault-tls
       mountPath: /vault/tls
       readOnly: true
