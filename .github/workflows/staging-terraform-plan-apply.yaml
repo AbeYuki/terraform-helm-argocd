@@ -7,7 +7,7 @@ on:
       - staging*
     paths:
       - 'staging/**'
-      - 'module/**'
+      - 'modules/**'
 
 jobs:
   terraform-plan-apply-staging:
