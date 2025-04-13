@@ -31,16 +31,16 @@ configs:
           command: [bash, -c]
           args:
           - |
-            helm template $ARGOCD_APP_NAME ../charts \
-              -f ../charts/values.yaml \
+            helm template $ARGOCD_APP_NAME ../../charts/ \
+              -f ../../charts/values.yaml  \
               -f values.yaml
       helm-template-avp: # plugin name
         generate:
           command: [bash, -c]
           args:
           - |
-            helm template $ARGOCD_APP_NAME ../charts \
-              -f ../charts/values.yaml \
+            helm template $ARGOCD_APP_NAME ../../charts/ \
+              -f ../../charts/values.yaml  \
               -f values.yaml |
             argocd-vault-plugin generate -s argocd:argocd-vault-plugin-credentials -
       helmfile: # plugin name
