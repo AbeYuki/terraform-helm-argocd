@@ -1,6 +1,7 @@
 global:
   logging:
     level: info
+
 configs:
   cm:
     exec.enabled: true
